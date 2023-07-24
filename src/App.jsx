@@ -60,7 +60,7 @@ export default function App() {
 function Header() {
   return (
     <header className="header">
-      <h1>Header </h1>
+      <h1>Piiiza </h1>
     </header>
   );
 }
@@ -77,11 +77,17 @@ function Menu() {
       {/* rendereing list */}
       {/* conditionial rendering */}
       {numPizza > 0 ? (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => (
-            <Pizza pizzaObject={pizza} key={pizza.name} />
-          ))}
-        </ul>
+        <>
+          <p>
+            Authentic Italian cuisine .6 creative sidher to chooese form All
+            form our stone oven, all organic all delicious
+          </p>
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObject={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </>
       ) : (
         <div>
           <p>
@@ -112,15 +118,21 @@ function Pizza({ pizzaObject }) {
   //   console.log({ pizzaObject });
 
   //   menghilangkan pizza yang soldout
-  if (pizzaObject.soldOut) return null;
+  //   if (pizzaObject.soldOut) return null;
 
   return (
-    <li className="pizza">
+    <li className={`pizza ${pizzaObject.soldOut ? "sold-out" : ""}`}>
       <img src={pizzaObject.photoName} alt="" />
       <div>
         <h3>{pizzaObject.name}</h3>
         <p>{pizzaObject.ingredients}</p>
-        <span>${pizzaObject.price + 3}</span>
+        <span>
+          {pizzaObject.soldOut ? (
+            <span style={{ color: "red" }}>SOLD OUT</span>
+          ) : (
+            "$" + pizzaObject.price
+          )}
+        </span>
       </div>
     </li>
   );
@@ -139,7 +151,7 @@ function Footer() {
       {/* {new Date().toLocaleString()}. We are currently open */}
       {/* {isOpen === closeHour ? "We are open " : "we are closed"} */}
       {isOpen ? (
-        <Order closeHour={closeHour} />
+        <Order closeHour={closeHour} openHour={openHour} />
       ) : (
         <div className="order">
           <p>Come visit or order online</p>
@@ -149,10 +161,12 @@ function Footer() {
     </footer>
   );
 }
-function Order(props) {
+function Order({ closeHour, openHour }) {
   return (
     <div className="order">
-      <p>We are open until {props.closeHour}:00</p>
+      <p>
+        We are open from {openHour} until {closeHour}:00
+      </p>
     </div>
   );
 }
